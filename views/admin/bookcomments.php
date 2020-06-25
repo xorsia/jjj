@@ -31,6 +31,21 @@ use yii\helpers\Html;
                     </div>
 
                 </div>
+                <div class="col-lg-7">
+                    <?php
+                        echo "<pre>";
+
+                        foreach ($comments_list as $key){
+                            print_r($key->admin_name);
+                            echo "<br>";
+                            print_r($key->text);
+                            echo "<br>";
+                            print_r($key->date);
+                            echo "<br>";
+                            echo "<hr>";
+                        }
+                    ?>
+                </div>
             </div>
         </div>
     </div>

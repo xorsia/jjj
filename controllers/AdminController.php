@@ -3,33 +3,19 @@
 
 namespace app\controllers;
 
-use app\models\Books;
-use SebastianBergmann\Comparator\Book;
-use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\Admin;
 use app\models\Author;
-use app\models\ContactForm;
-use app\models\LoginForm;
-use yii\data\Pagination;
-use yii\web\NotFoundHttpException;
 use app\models\Bookcomments;
+use app\models\Books;
+use app\models\LoginForm;
+use Yii;
+use yii\data\Pagination;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class AdminController extends Controller
 {
-    public function actionIndex()
+    public function actionAuthors()
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        return $this->render('index');
-    }
-
-    public function actionAuthors(){
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -55,7 +41,7 @@ class AdminController extends Controller
 
         $model = Author::findOne($id);
 
-        if($model == null){
+        if ($model == null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -69,7 +55,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionBooks(){
+    public function actionBooks()
+    {
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -88,7 +75,8 @@ class AdminController extends Controller
 
     }
 
-    public function actionBookcomment($id){
+    public function actionBookcomment($id)
+    {
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -100,15 +88,20 @@ class AdminController extends Controller
             return $this->redirect(["bookcomment?id=$id"]);
         }
 
-        if($model == null){
+        if ($model == null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
+        $comments_list = Bookcomments::find()
+            ->where(['book_id' => $id])
+            ->all();
+
         return $this->render('bookcomments',
-        [
-          'model' => $model,
-            'comments' => $comments,
-        ]);
+            [
+                'model' => $model,
+                'comments' => $comments,
+                'comments_list'=>$comments_list,
+            ]);
     }
 
     public function actionLogin()
@@ -127,6 +120,15 @@ class AdminController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionIndex()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        return $this->render('index');
     }
 
     public function actionLogout()
