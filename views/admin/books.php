@@ -16,7 +16,7 @@ use yii\widgets\LinkPager;
                 $author_id = $model->author[0]['id'];
                 $book_id = $model->id;
                 echo "<h3>" . $model->name . "</h3>" . "<h4><a href='aboutauthor?id=$author_id'>(" . $model->author[0]['name'] . " )</a></h4>";
-                echo "<h4  class=\"text-right\" ><p><a href='bookcomment?id=$book_id' class='text-warning'> отзывы </a></p></h4>";
+                echo "<h4  class=\"text-right\" ><p><a href='bookcomment?id=$book_id' class='text-warning'> оставить отзыв </a></p></h4>";
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";

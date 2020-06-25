@@ -61,7 +61,7 @@ class AdminController extends Controller
             return $this->goHome();
         }
 
-        $query = Books::find()->with('author');;
+        $query = Books::find()->with('author');
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'PageSize' => 6]);
         $models = $query->offset($pages->offset)
@@ -83,7 +83,6 @@ class AdminController extends Controller
         $comments = new Bookcomments();
         $model = Books::findOne($id);
 
-
         if ($comments->load(Yii::$app->request->post()) && $comments->save()) {
             return $this->redirect(["bookcomment?id=$id"]);
         }
@@ -94,6 +93,12 @@ class AdminController extends Controller
 
         $comments_list = Bookcomments::find()
             ->where(['book_id' => $id])
+            ->orderBy(['date'=>SORT_DESC]);
+
+        $countQuery = clone $comments_list;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'PageSize' => 4]);
+        $comments_list = $comments_list->offset($pages->offset)
+            ->limit($pages->limit)
             ->all();
 
         return $this->render('bookcomments',
@@ -101,6 +106,7 @@ class AdminController extends Controller
                 'model' => $model,
                 'comments' => $comments,
                 'comments_list'=>$comments_list,
+                'pages'=>$pages,
             ]);
     }
 
@@ -127,14 +133,12 @@ class AdminController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         return $this->render('index');
     }
 
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 }

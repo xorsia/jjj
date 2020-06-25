@@ -17,13 +17,12 @@ $this->title = 'index page';
                 $author_id =$models[$key]->id;
                 echo "<h4>";
                 echo "Написал(а) "."<a href='aboutauthor?id=$author_id'>".count($models[$key]->books)."</a>"." книг";
-
                 echo "</h4>";
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
             }
-            //            ?>
+            ?>
         </div>
         <?
         echo LinkPager::widget([

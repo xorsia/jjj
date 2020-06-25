@@ -12,7 +12,6 @@ $this->title = 'index page';
         <div class="row">
             <?php
             echo "<pre>";
-            //            var_dump($models);
             foreach ($models as $key => $value) {
                 echo "<div class='col-md-8'>";
                 echo "<div class='panel panel-default'>";
@@ -29,13 +28,13 @@ $this->title = 'index page';
                 echo "</div>";
                 echo "</div>";
             }
-            //            ?>
+            ?>
         </div>
         <?
-            echo LinkPager::widget([
-                'pagination' => $pages,
+        echo LinkPager::widget([
+            'pagination' => $pages,
 
-            ]);
+        ]);
         ?>
     </div>
 </div>
