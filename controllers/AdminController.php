@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\models\Books;
+use SebastianBergmann\Comparator\Book;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -15,6 +16,7 @@ use app\models\ContactForm;
 use app\models\LoginForm;
 use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
+use app\models\Bookcomments;
 
 class AdminController extends Controller
 {
@@ -50,11 +52,13 @@ class AdminController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+
         $model = Author::findOne($id);
 
         if($model == null){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+
         $bookslist = Books::find()
             ->where(['author_id' => $model->id])
             ->all();
@@ -64,19 +68,6 @@ class AdminController extends Controller
             'books' => $bookslist,
         ]);
     }
-
-//    protected function findModel($id)
-//    {
-//        if (Yii::$app->user->isGuest) {
-//            return $this->goHome();
-//        }
-//
-//        if (($model = Author::findAll($id)) !== null) {
-//            return $model;
-//        }
-//
-//        throw new NotFoundHttpException('The requested page does not exist.');
-//    }
 
     public function actionBooks(){
         if (Yii::$app->user->isGuest) {
@@ -95,7 +86,29 @@ class AdminController extends Controller
             'pages' => $pages,
         ]);
 
-//        return $this->render('books');
+    }
+
+    public function actionBookcomment($id){
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $comments = new Bookcomments();
+        $model = Books::findOne($id);
+
+
+        if ($comments->load(Yii::$app->request->post()) && $comments->save()) {
+            return $this->redirect(["bookcomment?id=$id"]);
+        }
+
+        if($model == null){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        return $this->render('bookcomments',
+        [
+          'model' => $model,
+            'comments' => $comments,
+        ]);
     }
 
     public function actionLogin()
