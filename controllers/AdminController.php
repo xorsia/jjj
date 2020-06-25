@@ -9,8 +9,10 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Admin;
+use app\models\Author;
 use app\models\ContactForm;
 use app\models\LoginForm;
+use yii\data\Pagination;
 
 class AdminController extends Controller
 {
@@ -23,10 +25,31 @@ class AdminController extends Controller
         return $this->render('index');
     }
 
-//    public function actionLogin(){
-//
-//        return $this->render('login');
-//    }
+    public function actionAuthors(){
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $query = Author::find()->with('books');;
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'PageSize' => 5]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('authors', [
+            'models' => $models,
+            'pages' => $pages,
+        ]);
+    }
+
+    public function actionBooks(){
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        return $this->render('books');
+    }
 
     public function actionLogin()
     {

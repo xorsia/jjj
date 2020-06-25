@@ -12,4 +12,12 @@ class Books extends ActiveRecord
         return '{{books}}';
     }
 
+    public function rules()
+    {
+        return [
+            // ...
+            'name' => [['name'], 'string', 'max' => 60],
+            'author_id' => [['author_id'], 'integer', 'max' => 60],
+        ];
+    }
 }
