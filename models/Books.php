@@ -20,4 +20,8 @@ class Books extends ActiveRecord
             'author_id' => [['author_id'], 'integer', 'max' => 60],
         ];
     }
+
+    public function getAuthor(){
+        return $this->hasMany(Author::className(), ['id' => 'author_id']);
+    }
 }

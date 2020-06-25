@@ -63,7 +63,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $query = Author::find()->with('books');;
+        $query = Author::find()->with('books');
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'PageSize' => 3]);
         $models = $query->offset($pages->offset)

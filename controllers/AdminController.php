@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 
+use app\models\Books;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -13,6 +14,7 @@ use app\models\Author;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use yii\data\Pagination;
+use yii\web\NotFoundHttpException;
 
 class AdminController extends Controller
 {
@@ -43,12 +45,57 @@ class AdminController extends Controller
         ]);
     }
 
+    public function actionAboutauthor($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = Author::findOne($id);
+
+        if($model == null){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        $bookslist = Books::find()
+            ->where(['author_id' => $model->id])
+            ->all();
+
+        return $this->render('aboutauthor', [
+            'model' => $model,
+            'books' => $bookslist,
+        ]);
+    }
+
+//    protected function findModel($id)
+//    {
+//        if (Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        if (($model = Author::findAll($id)) !== null) {
+//            return $model;
+//        }
+//
+//        throw new NotFoundHttpException('The requested page does not exist.');
+//    }
+
     public function actionBooks(){
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        return $this->render('books');
+        $query = Books::find()->with('author');;
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'PageSize' => 6]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('books', [
+            'models' => $models,
+            'pages' => $pages,
+        ]);
+
+//        return $this->render('books');
     }
 
     public function actionLogin()
