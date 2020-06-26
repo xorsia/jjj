@@ -12,6 +12,8 @@ class RandomController extends \yii\web\Controller
         return $this->render('index');
     }
 
+
+
     public function actionGenerate(){
         \Yii::$app->response->format = \Yii\web\Response::FORMAT_JSON;
         $random = new Random();
