@@ -33,7 +33,7 @@ class RandomController extends \yii\web\Controller
         }
     }
 
-    public function actionIndex(){
+    public function actionGame(){
         \Yii::$app->response->format = \Yii\web\Response::FORMAT_JSON;
             $link = null;
             $a = "NUUUUUUL -> Try to use [?id=]";

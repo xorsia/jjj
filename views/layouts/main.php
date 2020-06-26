@@ -40,7 +40,7 @@ AppAsset::register($this);
         'items' => [
                 !Yii::$app->user->isGuest ? (
                 ['label' => 'Админ панель', 'url' => ['#'], 'items' => [
-                    ['label' => 'Главная', 'url' => ['/admin/index']],
+                    ['label' => 'Про Api', 'url' => ['/admin/index']],
                     ['label' => 'CRUD Авторов', 'url' => ['/author/index']],
                     ['label' => 'CRUD Кинг', 'url' => ['/books/index']],
                     ['label' => 'Книги', 'url' => ['/admin/books']],
