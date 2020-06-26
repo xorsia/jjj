@@ -2,17 +2,12 @@
 
 namespace app\modules\api\controllers;
 use app\modules\api\models\Random;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\AccessControl;
 
 class RandomController extends \yii\web\Controller
 {
     public $enableCsrfValidation = false;
-    public function actionIndex()
-    {
-        echo "api test";exit();
-        return $this->render('index');
-    }
-
-
 
     public function actionGenerate(){
         \Yii::$app->response->format = \Yii\web\Response::FORMAT_JSON;
@@ -36,5 +31,16 @@ class RandomController extends \yii\web\Controller
         } else {
             return array('status' => true, 'data' => $result);
         }
+    }
+
+    public function actionIndex(){
+        \Yii::$app->response->format = \Yii\web\Response::FORMAT_JSON;
+            $link = null;
+            $a = "NUUUUUUL -> Try to use [?id=]";
+        if(\Yii::$app->request->get('id') == 1){
+            $a = true;
+            $link = 'https://www.youtube.com/watch?v=S5PvBzDlZGs';
+        }
+        return array('status'=> 'WELLCOME TO THE LINK GAME','your result'=>$a,'Link'=>$link);
     }
 }

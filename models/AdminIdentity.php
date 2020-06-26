@@ -20,7 +20,6 @@ class AdminIdentity extends Admin implements \yii\web\IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
        return static::findOne(['access_token' => $token]);
-
     }
 
     /**
